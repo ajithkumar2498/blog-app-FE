@@ -1,16 +1,20 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import {Outlet} from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import Login from '../routes/Login'
 
 const MainLayout = () => {
   
+  // const token = sessionStorage.getItem("token")
+  //  const  token  = useSelector((state) => state.auth.user.token);
+  //  console.log(token)
+
   return <>
-  
   <div className='px-4 md:px-8 lg:px-16 lx:px-32 2xl:px-64 '>
      <Navbar/>
      <Outlet/>
   </div>
-  
   </>
 }
 

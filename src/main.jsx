@@ -16,17 +16,13 @@ import {
 } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify';
 import Login from './routes/Login.jsx'
+import { Provider } from 'react-redux'
+import store from "./redux/store.js"
+import ProtectedRoute from './utils/ProtectedRoute.jsx'
+import ErrorPage from './routes/ErrorPage.jsx'
 // import "/react-toastify/dist/ReactToastify.css"
 
 const queryClient = new QueryClient()
-
-// Import your publishable key
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
-
-
-if (!PUBLISHABLE_KEY) {
-  throw new Error("Missing Publishable Key")
-}
 
 
 const router = createBrowserRouter([
@@ -35,19 +31,20 @@ const router = createBrowserRouter([
   children : [
     {
       path:"/",
-      element: <HomePage/>
+      element: (<ProtectedRoute> <HomePage/> </ProtectedRoute>)
     }, 
     {
-      path:"/posts",
-      element: <PostListPage/>
+      path:"/blogs",
+      element: (<ProtectedRoute><PostListPage/></ProtectedRoute>),
+      errorElement: (<ErrorPage />)
     },
     {
-      path:"/:slug",
-      element: <SinglePostPage/>
+      path:"/blog/:id",
+      element: (<ProtectedRoute> <SinglePostPage/></ProtectedRoute> )
     },
     {
       path:"/write",
-      element: <WritePage/>
+      element: (<ProtectedRoute><WritePage/></ProtectedRoute>)
     },
     {
       path:"/login",
@@ -69,11 +66,11 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey = {PUBLISHABLE_KEY}>
+    <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router}/>
         <ToastContainer position='bottom-right'/>
       </QueryClientProvider>
-    </ClerkProvider>
+    </Provider>
   </React.StrictMode>,
 )

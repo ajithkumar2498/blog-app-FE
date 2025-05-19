@@ -4,9 +4,13 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import AxiosService from "../utils/AxiosService";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "../redux/slices/authSlice";
 
 const Login = () => {
    const nav = useNavigate()
+
+   const dispatch = useDispatch()
 
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [name, setName] = useState("");
@@ -40,15 +44,16 @@ const Login = () => {
       });
     },
     onSuccess: (res) => {
-      toast.success(res.message || "Login Successful");
-      setName("")
-      setEmail("")
-      sessionStorage.setItem("token", res.token)
+      dispatch(setCredentials(res.data))
+      // sessionStorage.setItem("token", res.data.token);
       nav("/");
+      toast.success(res.data.message || "Login Successful");
+      setPassword("")
+      setEmail("")
     },
      onError: (error) => {
     toast.error(error.response?.data?.message || "Signup failed");
-    console.error("Signup error:", error);
+    // console.error("Signup error:", error);
   }
   });
 

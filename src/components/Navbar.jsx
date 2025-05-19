@@ -1,21 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import { GiHamburgerMenu } from "react-icons/gi";
-import { IoLogIn } from "react-icons/io5";
+import { IoLogIn, IoLogOut } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 import Image from './Image';
-import { Link } from 'react-router-dom';
-import {SignedIn, SignedOut, SignInButton, useAuth, UserButton} from "@clerk/clerk-react"
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { setCredentials } from '../redux/slices/authSlice';
+import { toast } from 'react-toastify';
+// import {SignedIn, SignedOut, SignInButton, useAuth, UserButton} from "@clerk/clerk-react"
 
 const Navbar = () => {
   const [open,setOpen] = useState(false)
 
-  const {getToken} = useAuth()
-  const token =  getToken().then(token => token)
 
+   const nav = useNavigate()
+
+   
+   const  user  = useSelector((state) => state.auth);
+
+   const handleLogout = ()=> {
+    sessionStorage.removeItem("userInfo")
+    nav("/loginNew")
+    toast.success("logged out Successful")
+   }
+
+  // var user = sessionStorage.getItem("userInfo")
+
+  // user = JSON.parse(user)
 
   useEffect(()=>{
-    getToken().then(token => token)
-  },[])
+    if(!user){
+      nav("/loginNew")
+    }
+  },[user])
 
   return <>
   <div className='w-full h-16 md:h-20 flex items-center justify-between'>
@@ -36,11 +53,9 @@ const Navbar = () => {
           <Link to="/">Home</Link>
           <Link to="/">Trending</Link>
           <Link to="/">Most Popular</Link>
-          <Link to="/">About</Link>
           <Link to="/write">Add Blog</Link>
-          <Link to="/login" >
-            <button className='flex py-2 px-4 rounded-3xl bg-blue-800 text-white hover:bg-blue-400 hover:text-blue-950'>Login <span className='font-xl pt-1'><IoLogIn /></span> </button>
-          </Link>
+           {/* <p >{user}</p> */}
+            <button className='flex py-2 px-4 rounded-3xl bg-blue-800 text-white hover:bg-blue-400 hover:text-blue-950'>Logout <span className='font-xl pt-1'><IoLogOut /></span> </button>
       </div>
     </div>
    
@@ -49,16 +64,9 @@ const Navbar = () => {
       <Link to="/">Home</Link>
       <Link to="/">Trending</Link>
       <Link to="/">Most Popular</Link>
-      <Link to="/">About</Link>
-      <Link to="/write">Add Blog</Link>
-      <SignedOut>
-      <Link to="/login" >
-        <button className='flex py-2 px-4 rounded-3xl bg-blue-800 text-white hover:bg-blue-400 hover:text-blue-950'>Login <span className='font-xl pt-1'><IoLogIn /></span> </button>
-      </Link>        
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+      <Link to="/write">Add Blog</Link>  
+       {/* <p >{user}</p>    */}
+        <button onClick={handleLogout} className='flex py-2 px-4 rounded-3xl bg-blue-800 text-white hover:bg-blue-400 hover:text-blue-950'>Logout <span className='font-xl pt-1'><IoLogOut /></span> </button>        
     </div>
   </div>
 

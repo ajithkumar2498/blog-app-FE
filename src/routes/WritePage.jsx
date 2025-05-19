@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useAuth, useUser } from '@clerk/clerk-react'
 import ReactQuill from 'react-quill';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import 'react-quill/dist/quill.snow.css';
@@ -7,49 +6,48 @@ import {toast} from "react-toastify"
 import AxiosService from '../utils/AxiosService';
 import { useNavigate } from 'react-router-dom';
 import UploadImages from '../components/UploadImages';
+import { useSelector } from 'react-redux';
 
 const WritePage = () => {
-  const nav = useNavigate()
 
-  const {getToken} = useAuth()
+   var user = useSelector((state) => state.auth.user);
+   console.log(JSON.parse(user))
+   user=JSON.parse(user)
+
+   const nav = useNavigate()
+   if(!user){
+    toast.error("Please Login to create a blog")
+    nav ("/loginNew")
+  }
+  
   const [value, setValue] = useState('')
   const [cover, setCover] = useState('')
   const [img, setImg] = useState('')
-  const [video, setVideo] = useState('')
   const [progress, setProgress] = useState(0)
 
   useEffect(()=>{
       img && setValue(prev =>prev+ `<p><image src=${img.url}></image></p>`)
   },[img])
-  useEffect(()=>{
-      video && setValue(prev =>prev+ `<p><iframe class="ql-video"  src=${video.url}></iframe></p>`)
-  },[video])
-
-  const {isLoaded, isSignedIn} =useUser()
 
   const mutation = useMutation({
     mutationFn: async (newPost) => {
-      const token = await getToken()
-      return AxiosService.post('/posts/add-post', newPost,
+      return AxiosService.post('/blogs/add-blog', newPost,
         {
           headers: {
-          Authorization : `Bearer ${token}`
+          Authorization : `Bearer ${user.token}`
         }}
       )
     },
     onSuccess:(res)=>{
       toast.success("Post has been created")
-      nav(`/${res.data.slug}`)
+      nav(`/`)
     }
   })
 
-  if(!isLoaded){
-    return <div className=''>Loading...</div>
-  }
 
-  if(isLoaded && !isSignedIn){
-    return <div className=''>You Should Login!</div>
-  }
+  // if(isLoaded && !isSignedIn){
+  //   return <div className=''>You Should Login!</div>
+  // }
 
   const handleSubmit = e =>{
     e.preventDefault()
@@ -93,7 +91,7 @@ const WritePage = () => {
                <UploadImages type="image" setProgress={setProgress} setData={setImg}>
                    🏞️
                </UploadImages>
-               <UploadImages type="video" setProgress={setProgress} setData={setVideo}>
+               <UploadImages type="video" setProgress={setProgress} >
                    ▶️
                </UploadImages>
           </div>

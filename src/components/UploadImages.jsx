@@ -5,7 +5,7 @@ import {IKContext, IKUpload} from 'imagekitio-react'
 
 const authenticator =  async () => {
     try {
-        const response = await fetch(`http://localhost:5000/posts/upload-auth`);
+        const response = await fetch(`http://localhost:7000/api/blogs/upload-auth`);
   
         if (!response.ok) {
             const errorText = await response.text();

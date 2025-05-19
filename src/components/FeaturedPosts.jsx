@@ -4,27 +4,35 @@ import AxiosService from "../utils/AxiosService";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "timeago.js";
+import { useSelector } from "react-redux";
 
-const fetchPost = async () => {
-  const res = await AxiosService.get(
-    `/posts/all-posts?featured=true&limit=4&sort=newest`
-  );
-  return res.data;
-};
 
 const FeaturedPosts = () => {
+
+  var user = useSelector((state) => state.auth.user); 
+  
+   user=JSON.parse(user)
+  const fetchPost = async () => {
+    const res = await AxiosService.get("/blogs/all-blogs", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    return res.data;
+  };
+
   const { isPending, error, data } = useQuery({
     queryKey: ["featuredPost"],
-    queryFn: () => fetchPost(),
+    queryFn: fetchPost, 
   });
-  if (isPending) return "Loading...";
-  if (error) return "something went wrong" || error.message;
 
-  const post = data.posts;
-  if (!post || post.legth === 0) {
-    return;
-  }
-  if (!data) return "post not found";
+  if (isPending) return "Loading...";
+  if (error) return "Something went wrong: " + error.message;
+
+  const post = data;
+
+  if (!post || post.length === 0) return "No posts found.";
+
   return (
     <>
       <div className="mt-8 flex flex-col lg:flex-row gap-8">
@@ -32,9 +40,9 @@ const FeaturedPosts = () => {
         <div className="w-full lg:w-1/2 flex flex-col gap-4">
           {/* Image */}
           {  
-            post[0].img &&
+            post.img &&
             <Image
-              src={ post[0].img}
+              src={ post.img}
               className="rounded-3xl object-cover"
               w="895"
             />
@@ -42,7 +50,7 @@ const FeaturedPosts = () => {
           {/* Details */}
           <div className="flex items-center gap-4">
             <h1 className="font-semibold lg:text-lg">01.</h1>
-            <Link className="text-blue-800 lg:text-lg">{post[0].category}</Link>
+            <Link className="text-blue-800 lg:text-lg">{post.category}</Link>
             <span className="text-gray-500">{format(post[0].createdAt)}</span>
           </div>
           {/* Title */}

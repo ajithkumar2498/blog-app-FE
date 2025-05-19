@@ -5,6 +5,8 @@ import { format } from 'timeago.js'
 
 
 const PostListItem = ({post}) => {
+
+ 
   return <>
   
     <div className='flex flex-col xl:flex-row gap-8 mb-8'>
@@ -14,12 +16,12 @@ const PostListItem = ({post}) => {
            </div>}
            {/* Details */}
            <div className="flex flex-col gap-4 xl:w-2/3">
-             <Link to={`/${post.slug}`} className="text-4xl font-semibold">
+             <Link to={`/blog/${post._id}`} className="text-4xl font-semibold">
              {post.title}
              </Link>
              <div className='flex items-center gap-2 text-gray-400 text-sm'>
                 <span>Written By</span>
-                <Link className="text-blue-800" to={`/posts?author=${post.user.userName}`}>{post.user?.userName || "Unknown Author"}</Link>
+                <Link className="text-blue-800" to={`/blogss?author=${post.author}`}>{post.author || "Unknown Author"}</Link>
                 <span>on</span>
                 <Link className="text-blue-800">{post.category}</Link>
                 <span>{format(post.createdAt)}</span>
@@ -29,7 +31,7 @@ const PostListItem = ({post}) => {
                   post.desc
                 }
                 </p>
-                <Link to={`/${post.slug}`} className='underline text-blue-800 text-sm'>
+                <Link to={`/blog/${post._id}`} className='underline text-blue-800 text-sm'>
                 Read More
                 </Link>
            </div>
