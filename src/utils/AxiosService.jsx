@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const AxiosService = axios.create({
-    baseURL:"http://localhost:7000/api",
+    baseURL:"https://blog-app-be-ksyv.onrender.com/api",
     headers:{
         "Content-Type":"application/json"
     }
