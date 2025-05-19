@@ -1,11 +1,12 @@
 import React, { useRef } from 'react'
 import { toast } from 'react-toastify'
 import {IKContext, IKUpload} from 'imagekitio-react'
+import AxiosService from '../utils/AxiosService';
 
 
 const authenticator =  async () => {
     try {
-        const response = await fetch(`https://blogapp-backend-1-mezn.onrender.com/api/blogs/upload-auth`);
+        const response = await AxiosService.get(`/blogs/upload-auth`);
   
         if (!response.ok) {
             const errorText = await response.text();
