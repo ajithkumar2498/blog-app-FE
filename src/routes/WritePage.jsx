@@ -13,21 +13,12 @@ const WritePage = () => {
   const nav = useNavigate();
 
   let user = useSelector((state) => state.auth.user);
-  if (typeof user === "string") {
-  try {
-    user = JSON.parse(user);
-  } catch (e) {
-    console.error("Error parsing user", e);
-    user = null;
-  }
-}
-
+ 
   const [value, setValue] = useState('');
   const [cover, setCover] = useState('');
   const [img, setImg] = useState('');
   const [progress, setProgress] = useState(0);
   const [initialData, setInitialData] = useState(null);
-
 
   useEffect(() => {
     if (!user) {

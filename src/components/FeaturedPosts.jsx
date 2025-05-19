@@ -10,15 +10,7 @@ import { useSelector } from "react-redux";
 const FeaturedPosts = () => {
 
   var user = useSelector((state) => state.auth.user);
-  if (typeof user === "string") {
-  try {
-    user = JSON.parse(user);
-  } catch (e) {
-    console.error("Error parsing user", e);
-    user = null;
-  }
-} 
-  
+    
   const fetchPost = async () => {
     const res = await AxiosService.get("/blogs/all-blogs", {
       headers: {

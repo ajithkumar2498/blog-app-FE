@@ -13,14 +13,7 @@ const PostMenuActions = ({post}) => {
   
   const navigate = useNavigate()
    let user = useSelector((state) => state.auth.user); 
-   if (typeof user === "string") {
-  try {
-    user = JSON.parse(user);
-  } catch (e) {
-    console.error("Error parsing user", e);
-    user = null;
-  }
-}
+
   let token = user?.token;
    const isAuthor = user.name === post.author
 

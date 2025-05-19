@@ -23,14 +23,6 @@ const SinglePostPage = () => {
   const { id } = useParams();
 
   var user = useSelector((state) => state.auth.user);
-  if (typeof user === "string") {
-    try {
-      user = JSON.parse(user);
-    } catch (e) {
-      console.error("Error parsing user", e);
-      user = null;
-    }
-  }
 
   const { isPending, error, data } = useQuery({
     queryKey: ["post", id],
