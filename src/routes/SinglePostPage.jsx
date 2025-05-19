@@ -3,7 +3,6 @@ import Image from "../components/Image";
 import { Link, useParams } from "react-router-dom";
 import PostMenuActions from "../components/PostMenuActions";
 import Search from "../components/Search";
-import Comments from "../components/Comments";
 import AxiosService from "../utils/AxiosService";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "timeago.js";
@@ -23,9 +22,15 @@ const fetchPost = async (id, token) => {
 const SinglePostPage = () => {
   const { id } = useParams();
 
-    var user = useSelector((state) => state.auth.user);
-     user=JSON.parse(user)
-    
+  var user = useSelector((state) => state.auth.user);
+  if (typeof user === "string") {
+    try {
+      user = JSON.parse(user);
+    } catch (e) {
+      console.error("Error parsing user", e);
+      user = null;
+    }
+  }
 
   const { isPending, error, data } = useQuery({
     queryKey: ["post", id],

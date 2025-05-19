@@ -20,7 +20,7 @@ const Navbar = () => {
 
    const handleLogout = ()=> {
     sessionStorage.removeItem("userInfo")
-    nav("/loginNew")
+    nav("/login")
     toast.success("logged out Successful")
    }
 
@@ -30,7 +30,7 @@ const Navbar = () => {
 
   useEffect(()=>{
     if(!user){
-      nav("/loginNew")
+      nav("/login")
     }
   },[user])
 

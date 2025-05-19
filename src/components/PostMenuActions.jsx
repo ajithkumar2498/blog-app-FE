@@ -1,6 +1,6 @@
 import { QueryClient, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import React from 'react'
-import { FaBookmark, FaRegBookmark, FaRegStar, FaStar } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark, FaRegEdit, FaRegStar, FaStar } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import AxiosService from '../utils/AxiosService';
 import { useNavigate } from 'react-router-dom';
@@ -11,11 +11,18 @@ import { useSelector } from 'react-redux';
 const PostMenuActions = ({post}) => {
  
   
-  const nav = useNavigate()
+  const navigate = useNavigate()
    let user = useSelector((state) => state.auth.user); 
-  user=JSON.parse(user)
+   if (typeof user === "string") {
+  try {
+    user = JSON.parse(user);
+  } catch (e) {
+    console.error("Error parsing user", e);
+    user = null;
+  }
+}
   let token = user?.token;
- 
+   const isAuthor = user.name === post.author
 
   const deleteMutation = useMutation({
     mutationFn: async ()=>{
@@ -28,7 +35,7 @@ const PostMenuActions = ({post}) => {
     },
     onSuccess: ()=>{
       toast.success("post deleted successfully!")
-      nav("/")
+      navigate("/")
     },
     onError: (error)=>{
       console.log(error.response.data)
@@ -40,10 +47,14 @@ const PostMenuActions = ({post}) => {
   const handleDelete = ()=>{
     deleteMutation.mutate()
     toast.success("post deleted successfully")
-    nav("/")
+    navigate("/")
     
   }
-
+  
+  const handleUpdate = ()=>{
+      navigate(`/edit-blog/${post._id}`);
+  }
+  if (!isAuthor) return null
   return <>
   
    <div className="mt-4">
@@ -58,6 +69,12 @@ const PostMenuActions = ({post}) => {
           deleteMutation.isPending && <span className='text-xs'>(in progress)</span>
         }
         </div>
+        <button 
+          onClick={handleUpdate}
+          className="flex items-center gap-2 py-2 text-sm cursor-pointer"  >
+          <FaRegEdit className='text-blue-800'/>
+          <span className='text-blue-800'>update post</span>
+        </button>
 
    </div>
   </>

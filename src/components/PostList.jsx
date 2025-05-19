@@ -8,7 +8,14 @@ import { useSelector } from "react-redux";
 
 const PostList = () => {
   let user = useSelector((state) => state.auth.user); 
-  user=JSON.parse(user)
+  if (typeof user === "string") {
+  try {
+    user = JSON.parse(user);
+  } catch (e) {
+    console.error("Error parsing user", e);
+    user = null;
+  }
+}
   const token = user?.token;
   
   const [searchParams, setSearchParams] = useSearchParams();

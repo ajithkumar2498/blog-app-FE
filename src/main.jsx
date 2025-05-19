@@ -5,11 +5,8 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom"
 import HomePage from './routes/HomePage.jsx'
 import PostListPage from './routes/PostListPage.jsx'
 import WritePage from './routes/WritePage.jsx'
-import LoginPage from './routes/LoginPage.jsx'
-import RegisterPage from './routes/RegisterPage.jsx'
 import SinglePostPage from './routes/SinglePostPage.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
-import { ClerkProvider } from '@clerk/clerk-react'
 import {
   QueryClient,
   QueryClientProvider,
@@ -47,13 +44,12 @@ const router = createBrowserRouter([
       element: (<ProtectedRoute><WritePage/></ProtectedRoute>)
     },
     {
-      path:"/login",
-      element: <LoginPage/>
+      path:"/edit-blog/:id",
+      element: (<ProtectedRoute><WritePage/></ProtectedRoute>)
     },
-    
-    {
-      path:"/register",
-      element: <RegisterPage/>
+     {
+      path:"*",
+      element: (<div>404 Not Found</div>)
     },
   ]
 },
