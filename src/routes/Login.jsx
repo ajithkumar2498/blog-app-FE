@@ -6,6 +6,7 @@ import AxiosService from "../utils/AxiosService";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../redux/slices/authSlice";
+import logo from "../../public/Images/logo.jpg"
 
 const Login = () => {
    const nav = useNavigate()
@@ -80,8 +81,12 @@ const Login = () => {
   return (
     <>
       <div className="flex items-center justify-evenly h-[calc(100vh-80px)] w-250px">
-        <div className="text-left text-gray-800 text-5xl font-extrabold w-1/3 text-base/27">
-          <p>
+        <div className="w-2/5 flex flex-col flex-wrap">
+         <div className="flex flex-wrap gap-10 align-middle mb-10 ">
+             <img src={logo} alt="logo" className="h-24 w-64 mix-blend-multiply" />
+          <h2 className="mb-10 text-center text-6xl text-blue-900 font-extrabold">Blogify</h2>
+         </div>
+          <p className="text-center text-gray-800 text-4xl font-extrabold text-base/27">
             Shape the Future With Your Words—Start Your Blogging Journey Today!
           </p>
         </div>
