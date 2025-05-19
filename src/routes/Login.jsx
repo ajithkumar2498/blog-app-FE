@@ -21,7 +21,6 @@ const Login = () => {
  
   const signUpMutation = useMutation({
     mutationFn: async (data) => {
-      console.log(data)
       return AxiosService.post("/auth/signup", data, {
           "Content-Type": "application/json",
       });
