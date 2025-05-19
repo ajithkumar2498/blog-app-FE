@@ -43,7 +43,7 @@ const SinglePostPage = () => {
           </h1>
           <div className=" flex items-center gap-2 text-gray-400 text-sm">
             <span>Written by</span>
-            <Link className="text-blue-800">{data.user.userName}</Link>
+            <Link className="text-blue-800">{data.user.Name}</Link>
             <span>on</span>
             <Link className="text-blue-800">{data.category}</Link>
             <span>{format(data.createdAt)}</span>
